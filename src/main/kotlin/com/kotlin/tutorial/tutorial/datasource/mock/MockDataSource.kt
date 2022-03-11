@@ -4,7 +4,7 @@ import com.kotlin.tutorial.tutorial.datasource.BankDataSource
 import com.kotlin.tutorial.tutorial.model.Bank
 import org.springframework.stereotype.Repository
 
-@Repository
+@Repository("mock")
 class MockDataSource : BankDataSource {
 
     val banks = mutableListOf(
@@ -39,5 +39,14 @@ class MockDataSource : BankDataSource {
         banks.add(updateBank)
 
         return updateBank
+    }
+
+    override fun deleteBank(accountNumber: String): Unit {
+
+        val currentBank = banks.firstOrNull() { it.accountNumber == accountNumber }
+            ?: throw NoSuchElementException("Could not find bank with account Number $accountNumber")
+
+        banks.remove(currentBank)
+
     }
 }
